@@ -15,7 +15,7 @@ def be():
     while True:
         tipus = int(input("Add meg a jatek tipusat (1-10): "))
         if 1 <= tipus <= 10:
-            print("A jatekod tipusa:", tipus)
+            # print("A jatekod tipusa:", tipus)
             break
         else:
             print("Nem megfelelo a jatek tipusa. Probald ujra!")
@@ -28,7 +28,10 @@ def readton():
         try:
             n = int(input("Add meg a szamodat (1-80 között): "))
             if 1 <= n <= 80:
-                mynums.append(n)
+                if n in mynums:
+                    print("A megadott szamot mar korabban megadtad!")
+                else:
+                    mynums.append(n)
             else:
                 print("A számnak 1 és 80 között kell lennie. Próbáld újra.")
         except ValueError:
@@ -42,7 +45,7 @@ def coin_upload():
     global coin
     value = int(input("Add meg, hogy mennyi Coin-t szeretnel feltolteni: "))
     coin += value
-    print("A jelenlegi egyenleged:", coin)
+    # print("A jelenlegi egyenleged:", coin)
 
 
 # Sorsolas szamok random generalasa
@@ -56,26 +59,42 @@ def numbers_generate(size, min_val, max_val):
 
 # A szamok egyezosegenek vizsgalata
 def talalatok():
-    print("Az eltalalt szamaid: ", end="")
+    global db_talalat
+    eltalalt = []
     for i in mynums:
         if i in numbers:
-            print(i, end=" ")
+            eltalalt.append(i)
+            db_talalat += 1
+    print("Az eltalalt szamaid:", str(eltalalt).strip("[]"))
 
 
 def nyerotabla():
-    nyerotabla = [
-        [1000000, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+    matrix = [
+        [1500000, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [8000, 100000, 0, 0, 0, 0, 0, 0, 0, 0],
+        [350, 1200, 20000, 0, 0, 0, 0, 0, 0, 0],
+        [30, 100, 500, 5000, 0, 0, 0, 0, 0, 0],
+        [3, 15, 25, 75, 1000, 0, 0, 0, 0, 0],
+        [1, 3, 5, 10, 25, 250, 0, 0, 0, 0],
+        [0, 0, 0, 2, 4, 13, 120, 0, 0, 0],
+        [0, 0, 0, 0, 0, 2, 3, 25, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 8, 0],
+        [2, 2, 2, 1, 1, 0, 0, 0, 0, 0]
     ]
-    print("A nyeremenyed: ", nyerotabla[])
+    print("A nyeremenyed:", matrix[10-db_talalat][10-tipus] * coin)
+    prize = matrix[10 - db_talalat][10 - tipus] * coin
+    print("Jelenlegi egyenleged:", prize)
 
 
 def main():
-    pass
+    be()
+    coin_upload()
+    readton()
+    numbers_generate(len(numbers), 1, 80)
+    talalatok()
+    nyerotabla()
 
 
 if __name__ == '__main__':
-    # readton()
-    # numbers_generate(len(numbers), 1, 80)
-    # talalatok()
-    nyerotabla()
+    main()
