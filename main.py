@@ -1,8 +1,7 @@
 # PYQT: pyqt5-tools designer
-
 import random
 
-forint = 0
+egyenleg = 0
 numbers = [0] * 20
 mynums = []
 db_talalat = 0
@@ -21,10 +20,62 @@ def be():
     while True:
         tipus = int(input("Kedves " + nev + " add meg a jatekod tipusat (1-10): "))
         if 1 <= tipus <= 10:
-            # print("A jatekod tipusa:", tipus)
             break
         else:
             print("Nem megfelelo a jatek tipusa. Probald ujra!")
+
+
+# Egyenleg feltoltes
+def coin_upload():
+    global egyenleg
+    value = int(input("Add meg, hogy mennyi Ft-ot szeretnel feltolteni: "))
+    egyenleg += value
+    # print("A jelenlegi egyenleged:", coin)
+
+
+# Sorsolas szamok random generalasa
+def numbers_generate(size, min_val, max_val):
+    global numbers
+    numbers = set()
+    while len(numbers) < size:
+        numbers.add(random.randint(min_val, max_val))
+    return numbers
+
+
+# A szamok egyezosegenek vizsgalata
+def talalatok():
+    global db_talalat
+    eltalalt = []
+    for i in mynums:
+        if i in numbers:
+            eltalalt.append(i)
+            db_talalat += 1
+        else:
+            db_talalat = db_talalat
+    print("db_talalat:", db_talalat)
+    if db_talalat > 0:
+        print("Az eltalalt szamaid:", str(eltalalt).strip("[]"))
+    else:
+        print("Sajnos egyetlen szamot sem talaltal el :(")
+
+
+def nyerotabla():
+    matrix = [
+        [1500000, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [8000, 100000, 0, 0, 0, 0, 0, 0, 0, 0],
+        [350, 1200, 20000, 0, 0, 0, 0, 0, 0, 0],
+        [30, 100, 500, 5000, 0, 0, 0, 0, 0, 0],
+        [3, 15, 25, 75, 1000, 0, 0, 0, 0, 0],
+        [1, 3, 5, 10, 25, 250, 0, 0, 0, 0],
+        [0, 0, 0, 2, 4, 13, 120, 0, 0, 0],
+        [0, 0, 0, 0, 0, 2, 3, 25, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 8, 0],
+        [2, 2, 2, 1, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+    print("A nyeremenyed:", matrix[10 - db_talalat][10 - tipus] * egyenleg, "Ft")
+    prize = matrix[10 - db_talalat][10 - tipus] * egyenleg
+    print("Jelenlegi egyenleged:", prize, "Ft")
 
 
 # READ TO N
@@ -33,7 +84,8 @@ def readton():
     while True:
         jatekmod = input("Add meg, hogy milyen jatekmodban akarsz jatszani (gepi/kezi): ").lower()
         if jatekmod == "gepi":
-            numbers_generate(10, 1, 80)
+            mynums = numbers_generate(10, 1, 80)
+            print("A gepi szamaid:", str(mynums).strip("{}"))
             break
         elif jatekmod == "kezi":
             while len(mynums) < 10:
@@ -55,64 +107,14 @@ def readton():
             print("Nem megfelelően megadott játékmód! Kérlek, válassz: 'gepi' vagy 'kezi'.")
 
 
-# Egyenleg feltoltes
-def coin_upload():
-    global forint
-    value = int(input("Add meg, hogy mennyi Ft-ot szeretnel feltolteni: "))
-    forint += value
-    # print("A jelenlegi egyenleged:", coin)
-
-
-# Sorsolas szamok random generalasa
-def numbers_generate(size, min_val, max_val):
-    global numbers
-    numbers = set()
-    while len(numbers) < size:
-        numbers.add(random.randint(min_val, max_val))
-        return numbers
-    print("A sorsolt szamok:", numbers)
-
-
-# A szamok egyezosegenek vizsgalata
-def talalatok():
-    global db_talalat
-    eltalalt = []
-    for i in mynums:
-        if i in numbers:
-            eltalalt.append(i)
-            db_talalat += 1
-        else:
-            db_talalat = 0
-            # print("Kedves " + nev + " sajnos egyetlen szamot sem talaltal el!")
-    print("Az eltalalt szamaid:", str(eltalalt).strip("[]"))
-
-
-def nyerotabla():
-    matrix = [
-        [1500000, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [8000, 100000, 0, 0, 0, 0, 0, 0, 0, 0],
-        [350, 1200, 20000, 0, 0, 0, 0, 0, 0, 0],
-        [30, 100, 500, 5000, 0, 0, 0, 0, 0, 0],
-        [3, 15, 25, 75, 1000, 0, 0, 0, 0, 0],
-        [1, 3, 5, 10, 25, 250, 0, 0, 0, 0],
-        [0, 0, 0, 2, 4, 13, 120, 0, 0, 0],
-        [0, 0, 0, 0, 0, 2, 3, 25, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 1, 8, 0],
-        [2, 2, 2, 1, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ]
-    print("A nyeremenyed:", matrix[10 - db_talalat][10 - tipus] * forint, "Ft")
-    prize = matrix[10 - db_talalat][10 - tipus] * forint
-    print("Jelenlegi egyenleged:", prize, "Ft")
-
-
 def main():
     be()
     coin_upload()
     readton()
-    numbers_generate(len(numbers), 1, 80)
+    print("A gep altal sorsolt szamok:", str(numbers_generate(20, 1, 80)).strip("{}"))
     talalatok()
     nyerotabla()
+    # print(numbers_generate(10, 1, 80))
 
 
 if __name__ == '__main__':
