@@ -1,19 +1,22 @@
+# PYQT: pyqt5-tools designer
+
 import random
 
-coin = 0
+forint = 0
 numbers = [0] * 20
 mynums = []
 db_talalat = 0
 tipus = 0
+nev = ""
 
 
 # Nev es jatektipus bekerese
 def be():
-    global tipus
+    global tipus, nev
     nev = input("Add meg a neved: ")
     print("Udvozlunk a jatekban " + nev + "!")
     while True:
-        tipus = int(input("Add meg a jatek tipusat (1-10): "))
+        tipus = int(input("Kedves " + nev + " add meg a jatekod tipusat (1-10): "))
         if 1 <= tipus <= 10:
             # print("A jatekod tipusa:", tipus)
             break
@@ -24,27 +27,36 @@ def be():
 # READ TO N
 def readton():
     global mynums
-    while len(mynums) < 10:
-        try:
-            n = int(input("Add meg a szamodat (1-80 között): "))
-            if 1 <= n <= 80:
-                if n in mynums:
-                    print("A megadott szamot mar korabban megadtad!")
-                else:
-                    mynums.append(n)
-            else:
-                print("A számnak 1 és 80 között kell lennie. Próbáld újra.")
-        except ValueError:
-            print("Hibás érték! Kérlek, számot adj meg.")
-    new_mynums = str(mynums).strip("[]")
-    print("Az altalad megadott szamok:", new_mynums)
+    while True:
+        jatekmod = input("Add meg, hogy milyen jatekmodban akarsz jatszani (gepi/kezi): ").lower()
+        if jatekmod == "gepi":
+            numbers_generate(10, 1, 80)
+            break
+        elif jatekmod == "kezi":
+            while len(mynums) < 10:
+                try:
+                    n = int(input("Add meg a szamodat (1-80 között): "))
+                    if 1 <= n <= 80:
+                        if n in mynums:
+                            print("A megadott szamot mar korabban megadtad!")
+                        else:
+                            mynums.append(n)
+                    else:
+                        print("A számnak 1 és 80 között kell lennie. Próbáld újra.")
+                except ValueError:
+                    print("Hibás érték! Kérlek, számot adj meg.")
+            new_mynums = str(mynums).strip("[]")
+            print("Az altalad megadott szamok:", new_mynums)
+            break
+        else:
+            print("Nem megfelelően megadott játékmód! Kérlek, válassz: 'gepi' vagy 'kezi'.")
 
 
 # Egyenleg feltoltes
 def coin_upload():
-    global coin
-    value = int(input("Add meg, hogy mennyi Coin-t szeretnel feltolteni: "))
-    coin += value
+    global forint
+    value = int(input("Add meg, hogy mennyi Ft-ot szeretnel feltolteni: "))
+    forint += value
     # print("A jelenlegi egyenleged:", coin)
 
 
@@ -65,11 +77,13 @@ def talalatok():
         if i in numbers:
             eltalalt.append(i)
             db_talalat += 1
+        else:
+            db_talalat = 0
+            # print("Kedves " + nev + " sajnos egyetlen szamot sem talaltal el!")
     print("Az eltalalt szamaid:", str(eltalalt).strip("[]"))
 
 
 def nyerotabla():
-
     matrix = [
         [1500000, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [8000, 100000, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -80,11 +94,12 @@ def nyerotabla():
         [0, 0, 0, 2, 4, 13, 120, 0, 0, 0],
         [0, 0, 0, 0, 0, 2, 3, 25, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 1, 8, 0],
-        [2, 2, 2, 1, 1, 0, 0, 0, 0, 0]
+        [2, 2, 2, 1, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
-    print("A nyeremenyed:", matrix[10-db_talalat][10-tipus] * coin)
-    prize = matrix[10 - db_talalat][10 - tipus] * coin
-    print("Jelenlegi egyenleged:", prize)
+    print("A nyeremenyed:", matrix[10 - db_talalat][10 - tipus] * forint, "Ft")
+    prize = matrix[10 - db_talalat][10 - tipus] * forint
+    print("Jelenlegi egyenleged:", prize, "Ft")
 
 
 def main():
