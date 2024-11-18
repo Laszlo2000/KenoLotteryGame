@@ -14,7 +14,10 @@ nev = ""
 def be():
     global tipus, nev
     nev = input("Add meg a neved: ")
-    print("Udvozlunk a jatekban " + nev + "!")
+    if nev == "Vanda":
+        print("Köszönjük, hogy velünk játszol " + nev + "😘🥰❤️")
+    else:
+        print("Udvozlunk a jatekban " + nev + "!")
     while True:
         tipus = int(input("Kedves " + nev + " add meg a jatekod tipusat (1-10): "))
         if 1 <= tipus <= 10:
@@ -66,7 +69,8 @@ def numbers_generate(size, min_val, max_val):
     numbers = set()
     while len(numbers) < size:
         numbers.add(random.randint(min_val, max_val))
-    print("A sorsolt szamok:", str(list(numbers)).strip("[]"))
+        return numbers
+    print("A sorsolt szamok:", numbers)
 
 
 # A szamok egyezosegenek vizsgalata
